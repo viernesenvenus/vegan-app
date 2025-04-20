@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScanResults } from "@/components/scan-results"
 import { motion, AnimatePresence } from "framer-motion"
+import { useLanguage } from "@/contexts/language-context"
 import Tesseract from "tesseract.js"
 
 export function ScanForm() {
+  const { t } = useLanguage()
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState<string | null>(null)
@@ -108,9 +110,9 @@ export function ScanForm() {
                         <Loader2 className="h-12 w-12 animate-spin text-green-600 dark:text-green-400" />
                         <div className="absolute inset-0 h-12 w-12 animate-ping rounded-full border-2 border-green-600 opacity-20 dark:border-green-400"></div>
                       </div>
-                      <h3 className="mt-6 text-xl font-medium">Analyzing ingredients...</h3>
+                      <h3 className="mt-6 text-xl font-medium">{t('scan.processing')}</h3>
                       <p className="text-center text-sm text-muted-foreground mt-2">
-                        We're checking if this product is vegan
+                        {t('scanner.subtitle2')}
                       </p>
                     </div>
                   ) : (
@@ -119,9 +121,9 @@ export function ScanForm() {
                         <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 mb-4">
                           <ImageIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
                         </div>
-                        <h3 className="text-xl font-medium mb-1">Upload an ingredient list</h3>
+                        <h3 className="text-xl font-medium mb-1">{t('scan.upload')}</h3>
                         <p className="text-sm text-muted-foreground">
-                          Take a photo or upload an image of the ingredients
+                          {t('scanner.subtitle1')}
                         </p>
                       </div>
 
@@ -134,8 +136,8 @@ export function ScanForm() {
                             <Upload className="h-10 w-10 text-muted-foreground/50 transition-transform group-hover:scale-110" />
                             <div className="absolute inset-0 animate-pulse rounded-full bg-muted-foreground/5 group-hover:animate-none"></div>
                           </div>
-                          <p className="mb-1 text-sm font-medium">Drag & drop or click to upload</p>
-                          <p className="text-xs text-muted-foreground">Support for JPG, PNG and GIF files</p>
+                          <p className="mb-1 text-sm font-medium">{t('scan.dragDrop')}</p>
+                          <p className="text-xs text-muted-foreground">Compatible con archivos JPG, PNG y GIF</p>
                         </div>
 
                         <div className="relative">
@@ -143,13 +145,13 @@ export function ScanForm() {
                             <span className="w-full border-t"></span>
                           </div>
                           <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-background px-2 text-muted-foreground">Or</span>
+                            <span className="bg-background px-2 text-muted-foreground">{t('scan.or')}</span>
                           </div>
                         </div>
 
                         <Button variant="outline" onClick={takeDemoPhoto} className="w-full py-6 text-base font-medium">
                           <Camera className="mr-2 h-5 w-5" />
-                          Take a Photo
+                          {t('scan.takePhoto')}
                         </Button>
                       </div>
                     </>
@@ -178,7 +180,7 @@ export function ScanForm() {
                 >
                   <span className="relative z-10 flex items-center gap-2 text-sm font-medium transition-transform group-hover:scale-105">
                     <RefreshCw className="h-4 w-4" />
-                    Scan Another Product
+                    {t('scan.another')}
                   </span>
                   <span className="absolute inset-0 z-0 bg-gradient-to-r from-green-100 to-green-50 opacity-0 transition-opacity group-hover:opacity-100 dark:from-green-900/20 dark:to-green-800/20"></span>
                 </Button>

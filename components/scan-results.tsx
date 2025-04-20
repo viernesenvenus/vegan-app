@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
+import { useLanguage } from "@/contexts/language-context"
 
 interface ScanResultsProps {
   ingredientText: string
@@ -16,6 +17,40 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
   const [result, setResult] = useState<"vegan" | "non-vegan" | "unclear">("unclear")
   const [nonVeganIngredients, setNonVeganIngredients] = useState<string[]>([])
   const [showDetails, setShowDetails] = useState(false)
+  const { t, language } = useLanguage()
+
+  const resultText = {
+    es: {
+      title: {
+        vegan: "Este Producto es Vegano",
+        nonVegan: "Este Producto no es Vegano"
+      },
+      description: {
+        vegan: "No se detectaron ingredientes de origen animal",
+        nonVegan: (count: number) => `Contiene ${count} ingrediente${count > 1 ? "s" : ""} no vegano${count > 1 ? "s" : ""}`
+      },
+      goodChoice: "¡Buena elección! Este producto es apto para veganos.",
+      showDetails: "Mostrar Detalles",
+      hideDetails: "Ocultar Detalles",
+      nonVeganFound: "Ingredientes no veganos encontrados:",
+      analyzedIngredients: "Ingredientes analizados:"
+    },
+    en: {
+      title: {
+        vegan: "This Product is Vegan",
+        nonVegan: "This Product is Not Vegan"
+      },
+      description: {
+        vegan: "No animal-derived ingredients were detected",
+        nonVegan: (count: number) => `Contains ${count} non-vegan ingredient${count > 1 ? "s" : ""}`
+      },
+      goodChoice: "Good choice! This product is suitable for vegans.",
+      showDetails: "Show Details",
+      hideDetails: "Hide Details",
+      nonVeganFound: "Non-vegan ingredients found:",
+      analyzedIngredients: "Analyzed ingredients:"
+    }
+  }
 
   useEffect(() => {
     // List of non-vegan ingredients to check against (in English and Spanish)
@@ -154,13 +189,13 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
         }`}
       >
         <div className="p-6 md:p-8">
-          <div className="flex flex-col md:flex-row md:items-center md:gap-6">
+          <div className={`flex flex-col md:flex-row ${imageUrl ? "md:gap-8" : ""}`}>
             {imageUrl && (
               <div className="mb-4 md:mb-0 md:w-1/3">
                 <div className="overflow-hidden rounded-lg border-4 border-white shadow-md dark:border-gray-800">
                   <img
-                    src={imageUrl || "/placeholder.svg"}
-                    alt="Ingredient list"
+                    src={imageUrl}
+                    alt={t("scan.ingredientList")}
                     className="aspect-square w-full object-cover"
                   />
                 </div>
@@ -176,7 +211,7 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
                       : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
                   }`}
                 >
-                  {result === "vegan" ? "Vegan" : "Not Vegan"}
+                  {t(result === "vegan" ? "status.vegan" : "status.notVegan")}
                 </Badge>
                 <div className="flex items-start gap-4">
                   <div
@@ -194,16 +229,14 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold">
-                      {result === "vegan" ? "This Product is Vegan" : "This Product is Not Vegan"}
+                      {result === "vegan" 
+                        ? resultText[language].title.vegan 
+                        : resultText[language].title.nonVegan}
                     </h2>
                     <p className="text-muted-foreground">
-                      {result === "vegan" ? (
-                        "No animal-derived ingredients detected"
-                      ) : (
-                        `Contains ${nonVeganIngredients.length} non-vegan ingredient${
-                          nonVeganIngredients.length > 1 ? "s" : ""
-                        }`
-                      )}
+                      {result === "vegan"
+                        ? resultText[language].description.vegan
+                        : resultText[language].description.nonVegan(nonVeganIngredients.length)}
                     </p>
                   </div>
                 </div>
@@ -213,7 +246,7 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
                 <div className="mt-4 flex items-center gap-2 rounded-lg bg-green-100/50 p-3 dark:bg-green-900/10">
                   <Leaf className="h-5 w-5 text-green-600 dark:text-green-400" />
                   <p className="text-sm text-green-800 dark:text-green-300">
-                    Good choice! This product is suitable for vegans.
+                    {resultText[language].goodChoice}
                   </p>
                 </div>
               )}
@@ -225,7 +258,7 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
                   onClick={() => setShowDetails(!showDetails)}
                   className="flex items-center gap-1 text-xs"
                 >
-                  {showDetails ? "Hide Details" : "Show Details"}
+                  {showDetails ? resultText[language].hideDetails : resultText[language].showDetails}
                   {showDetails ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
               </div>
@@ -246,7 +279,7 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
                 <div className="space-y-4">
                   {result === "non-vegan" && nonVeganIngredients.length > 0 && (
                     <div>
-                      <h3 className="mb-2 font-medium">Non-vegan ingredients found:</h3>
+                      <h3 className="mb-2 font-medium">{resultText[language].nonVeganFound}</h3>
                       <div className="flex flex-wrap gap-2">
                         {nonVeganIngredients.map((ingredient, index) => (
                           <Badge
@@ -262,7 +295,7 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
                   )}
 
                   <div>
-                    <h3 className="mb-2 font-medium">Ingredients analyzed:</h3>
+                    <h3 className="mb-2 font-medium">{resultText[language].analyzedIngredients}</h3>
                     <Card>
                       <CardContent className="p-3 text-sm">
                         <p className="font-mono">{ingredientText}</p>

@@ -4,8 +4,24 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Leaf, Camera, Check, X, AlertTriangle } from "lucide-react"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-context"
 
 export function HeroSection() {
+  const { t, language } = useLanguage()
+
+  const titleText = {
+    es: {
+      prefix: "¿Es ",
+      highlight: "Vegano",
+      suffix: "?"
+    },
+    en: {
+      prefix: "Is it ",
+      highlight: "Vegan",
+      suffix: "?"
+    }
+  }
+
   return (
     <div className="relative overflow-hidden">
       {/* Background decoration */}
@@ -22,15 +38,18 @@ export function HeroSection() {
                 <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm dark:bg-green-800/30">
                   <span className="flex items-center gap-1">
                     <Leaf className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
-                    <span className="text-green-800 dark:text-green-300">Plant-based living made easy</span>
+                    <span className="text-green-800 dark:text-green-300">{t('hero.badge')}</span>
                   </span>
                 </div>
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                  Is it <span className="text-green-600 dark:text-green-400">Vegan</span>?
+                  {titleText[language].prefix}
+                  <span className="text-green-600 dark:text-green-400">
+                    {titleText[language].highlight}
+                  </span>
+                  {titleText[language].suffix}
                 </h1>
                 <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Take a photo of any ingredient list and instantly know if a product is vegan-friendly. No more
-                  squinting at tiny labels or Googling unfamiliar ingredients.
+                  {t('hero.subtitle')}
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -40,12 +59,12 @@ export function HeroSection() {
                     className="bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 w-full min-[400px]:w-auto"
                   >
                     <Camera className="mr-2 h-4 w-4" />
-                    Scan Ingredients
+                    {t('hero.cta')}
                   </Button>
                 </Link>
                 <Link href="#how-it-works">
                   <Button size="lg" variant="outline" className="w-full min-[400px]:w-auto">
-                    How It Works
+                    {t('hero.howItWorks')}
                   </Button>
                 </Link>
               </div>
@@ -62,7 +81,7 @@ export function HeroSection() {
                     >
                       <div className="flex items-center gap-3">
                         <Check className="h-8 w-8 text-green-500" />
-                        <span className="text-lg font-medium">Vegan</span>
+                        <span className="text-lg font-medium">Vegano</span>
                       </div>
                     </motion.div>
                     <motion.div
@@ -73,7 +92,7 @@ export function HeroSection() {
                     >
                       <div className="flex items-center gap-3">
                         <X className="h-6 w-6 text-red-500" />
-                        <span className="text-sm font-medium">Not Vegan</span>
+                        <span className="text-sm font-medium">No Vegano</span>
                       </div>
                     </motion.div>
                     <motion.div
@@ -84,7 +103,7 @@ export function HeroSection() {
                     >
                       <div className="flex items-center gap-3">
                         <AlertTriangle className="h-6 w-6 text-yellow-500" />
-                        <span className="text-sm font-medium">Check</span>
+                        <span className="text-sm font-medium">Verificar</span>
                       </div>
                     </motion.div>
                     <motion.div
@@ -95,7 +114,7 @@ export function HeroSection() {
                     >
                       <div className="flex items-center gap-2">
                         <Camera className="h-5 w-5 text-gray-500" />
-                        <span className="text-sm font-medium">Scan Now</span>
+                        <span className="text-sm font-medium">Escanear Ahora</span>
                       </div>
                     </motion.div>
                   </div>
@@ -105,7 +124,7 @@ export function HeroSection() {
           </div>
 
           <div id="how-it-works" className="mt-24 mb-12">
-            <h2 className="text-2xl font-bold text-center mb-12">How It Works</h2>
+            <h2 className="text-2xl font-bold text-center mb-12">Cómo Funciona</h2>
             <div className="grid gap-8 md:grid-cols-3">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -117,9 +136,9 @@ export function HeroSection() {
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
                   <Camera className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-xl font-bold">Snap a Photo</h3>
+                <h3 className="text-xl font-bold">Toma una Foto</h3>
                 <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  Take a picture of the ingredient list on any food product
+                  Fotografía la lista de ingredientes de cualquier producto alimenticio
                 </p>
               </motion.div>
               <motion.div
@@ -147,9 +166,9 @@ export function HeroSection() {
                     <path d="M5 21h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold">Instant Analysis</h3>
+                <h3 className="text-xl font-bold">Análisis Instantáneo</h3>
                 <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  Our app scans and analyzes all ingredients automatically
+                  Nuestra app escanea y analiza todos los ingredientes automáticamente
                 </p>
               </motion.div>
               <motion.div
@@ -162,9 +181,9 @@ export function HeroSection() {
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
                   <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-xl font-bold">Get Results</h3>
+                <h3 className="text-xl font-bold">Obtén Resultados</h3>
                 <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  Instantly see if the product is vegan, non-vegan, or needs verification
+                  Descubre al instante si el producto es vegano o no
                 </p>
               </motion.div>
             </div>

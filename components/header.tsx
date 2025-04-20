@@ -1,12 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { Leaf } from "lucide-react"
-import { ModeToggle } from "@/components/mode-toggle"
+import { useLanguage } from "@/contexts/language-context"
 import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
+import { ModeToggle } from "@/components/mode-toggle"
+import { LanguageSelector } from "@/components/language-selector"
+import { Logo } from "@/components/logo"
 
 export function Header() {
+  const { t } = useLanguage()
   const pathname = usePathname()
 
   return (
@@ -17,21 +20,11 @@ export function Header() {
       className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/60"
     >
       <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-            <Leaf className="h-5 w-5 text-green-600 dark:text-green-400" />
-          </div>
-          <span className="text-xl font-bold">Vegan Check</span>
+        <Link href="/" className="flex items-center space-x-2">
+          <Logo />
         </Link>
         <div className="flex items-center gap-4">
-          {pathname !== "/scan" && (
-            <Link
-              href="/scan"
-              className="text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 hidden sm:block"
-            >
-              Scan Ingredients
-            </Link>
-          )}
+          <LanguageSelector />
           <ModeToggle />
         </div>
       </div>

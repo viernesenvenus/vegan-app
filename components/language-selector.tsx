@@ -1,51 +1,29 @@
 "use client"
 
-import { useState } from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-
-const languages = [
-  { value: "en", label: "English" },
-  { value: "es", label: "Español" },
-]
 
 export function LanguageSelector() {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("en")
+  const { language, setLanguage, t } = useLanguage()
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-[120px] justify-between">
-          {value === "en" ? "English" : "Español"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[120px] p-0">
-        <Command>
-          <CommandList>
-            <CommandEmpty>No language found.</CommandEmpty>
-            <CommandGroup>
-              {languages.map((language) => (
-                <CommandItem
-                  key={language.value}
-                  value={language.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check className={cn("mr-2 h-4 w-4", value === language.value ? "opacity-100" : "opacity-0")} />
-                  {language.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <div className="flex gap-2">
+      <Button
+        variant={language === 'es' ? 'default' : 'outline'}
+        size="sm"
+        onClick={() => setLanguage('es')}
+        className="min-w-[80px]"
+      >
+        {t('language.es')}
+      </Button>
+      <Button
+        variant={language === 'en' ? 'default' : 'outline'}
+        size="sm"
+        onClick={() => setLanguage('en')}
+        className="min-w-[80px]"
+      >
+        {t('language.en')}
+      </Button>
+    </div>
   )
 }
