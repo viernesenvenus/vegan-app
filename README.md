@@ -31,4 +31,4 @@
 
 ## ✍️ Creadora
 
-Lucía Cruz — Producto creado desde experiencia real
+Lucía Cruz S.
