@@ -49,7 +49,6 @@ export function ScanResults({ ingredientText, imageUrl }: ScanResultsProps) {
       "\\be-?542\\b", "\\bfosfato de huesos\\b",
       "\\be-?422\\b", "\\bglicerol\\b",
       "\\be-?471\\b", "\\bmonogliceridos\\b", "\\bdigliceridos\\b",
-      "\\be-?101\\b", "\\briboflavina\\b",
       "\\be-?270\\b", "\\bacido lactico\\b", "\\bácido láctico\\b",
       "\\be-?322\\b", "\\blecitina\\b",
       "\\be-?483\\b", "\\btartrato de estearilo\\b",
